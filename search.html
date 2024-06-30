@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buscando...</title>
+</head>
+<body>
+    <h1>Buscando...</h1>
+
+    <script>
+        // Obtén el parámetro de consulta 'query' de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('query').toLowerCase();
+
+        // Lista de páginas para buscar
+        const pages = ['index.html', 'equipos.html', 'contacto.html', 'Grupos.html'];
+
+        // Busca la consulta en cada página
+        pages.forEach(page => {
+            fetch(page)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text()
+                })
+                .then(text => {
+                    if (text.toLowerCase().includes(query)) {
+                        // Si se encontró la consulta en la página, redirige a esa página
+                        window.location.href = page;
+                    }
+                })
+                .catch(e => {
+                    console.log('There was a problem with the fetch operation: ' + e.message);
+                });
+        });
+    </script>
+</body>
+</html>
